@@ -34,8 +34,7 @@
         video = document.querySelector("video");
         player = dashjs.MediaPlayer().create();
         player.initialize(video, url, true);
-        player.updateSettings({'streaming': {'lowLatencyEnabled': true}});
-
+        player.updateSettings({'streaming': {'lowLatencyEnabled': false}});
         applyParameters();
 
         return player;
@@ -49,13 +48,71 @@ function updateHTML(elmId, value) {
 }
 </script>
 <body>
-<div>
-    <video controls="true">
-    </video>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        init(); 
+
+    });
+</script>
+
+
+
+<div style= "width: 100%;">
+	<div class="video" style="width: 50%; float: left;">
+            <video controls="true"></video>
+           </div>
+
+    <div class="video-wrapper" style="margin-left: 50%;">
+        <div>
+
+            <div>
+                <form action="javascript:applyParameters()">
+                    <fieldset>
+                        <legend>Configurable parameters</legend>
+                        <p>Target Latency (secs): <input type="number" id="target-latency" value="3" min="0"></p>
+                        <p>Min. drift (secs): <input type="number" id="min-drift" value="0.05" min="0.0" max="0.5" step="0.01"></p>Catch-up playback rate (%): <input type="number" id="catchup-playback-rate" value="0.5" min="0.0" max="0.5" step="0.01"></p>
+                        <p>Live catchup latency threshold (secs): <input type="number" id="catchup-threshold" value="30"></p>
+                        <button type="submit">Apply</button>
+                    </fieldset>
+                </form>
+            </div>
+            <br>
+            <fieldset>
+                <legend>Current values</legend>
+                <ul>
+                    <li>Latency: <span id="latency-tag">3.011 secs</span></li>
+                    <li>Min. drift: <span id="mindrift-tag">0.05 secs</span></li>
+                    <li>Playback rate: <span id="playbackrate-tag">1</span></li>
+                    <li>Live catchup latency threshold : <span id="catchup-threshold-tag">30 secs</span></li>
+                   <li>Buffer: <b><span id="buffer-tag">2.34 secs</span></b></li>
+                </ul>
+            </fieldset>
+        </div>
+    </div>
+</div>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        init();
+        var player = init();
+
+        setInterval(function () {
+            var dashMetrics = player.getDashMetrics();
+            var settings = player.getSettings();
+
+            var currentLatency = parseFloat(player.getCurrentLiveLatency(), 10);
+            document.getElementById("latency-tag").innerHTML = currentLatency + " secs";
+
+            document.getElementById("mindrift-tag").innerHTML = settings.streaming.liveCatchup.minDrift + " secs";
+
+            var currentPlaybackRate = player.getPlaybackRate();
+            document.getElementById("playbackrate-tag").innerHTML = Math.round(currentPlaybackRate * 100) / 100;
+
+            var currentBuffer = dashMetrics.getCurrentBufferLevel("video");
+            document.getElementById("buffer-tag").innerHTML = currentBuffer + " secs";
+            
+            document.getElementById("catchup-threshold-tag").innerHTML = settings.streaming.liveCatchup.latencyThreshold + " secs";
+            
+        }, 200);
     });
 </script>
 </body>
