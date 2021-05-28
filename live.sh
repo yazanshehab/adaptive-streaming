@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Content-type: text/html"
+echo
+
 /home/yeezy/program/ffmpeg/ffmpeg\
  -stream_loop -1 -re  -i /home/yeezy/bun.mp4 \
  -c:v libx264 -ldash 1 -streaming 1 -frag_type every_frame -tune zerolatency\
