@@ -1,4 +1,8 @@
-  GNU nano 4.8                                                         index.html                                                                   
+html>
+<head>
+  <script src="http://cdn.dashjs.org/latest/dash.all.min.js"></script>
+
+  <title>Adaptive Streaming</title>
         <meta charset="utf-8"/>
 
 
@@ -35,11 +39,180 @@
         applyParameters();
 
         return player;
-    }
+   }
 
 function updateHTML(elmId, value) {
   var elem = document.getElementById(elmId);
   if(typeof elem !== 'undefined' && elem !== null) {
+    elem.innerHTML = value;
+  }
+}
+</script>
 
-^G Get Help     ^O Write Out    ^W Where Is     ^K Cut Text     ^J Justify      ^C Cur Pos      M-U Undo        M-A Mark Text   M-] To Bracket
-^X Exit         ^R Read File    ^\ Replace      ^U Paste Text   ^T To Spell     ^_ Go To Line   M-E Redo        M-6 Copy Text   ^Q Where Was
+<style>
+*{      box-sizing: border-box;
+        font-family: sans-serif;}
+
+body{
+        margin: 0;
+}
+
+nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background: grey;
+        display: block;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+}
+Button{
+        width:100%;
+        font-size: 20px;
+        margin: 4px 2px;
+}
+
+main{
+        margin-left: 250px;
+        padding: 10px;
+}
+</style>
+
+<body>
+
+<nav>
+<h2> choose a category to see how adaptive streaming works <h2><br>
+<button onclick="Soccer()">Soccer</button><br>
+<button onclick="Basketball()">Basketball</button><br>
+<button onclick="ESports()">ESports</button><br>
+<button onclick="Tennis()">Tennis</button><br>
+<button onclick="Football()">Football</button><br>
+<button onclick="Olympics()">Olympics</button><br>
+<button onclick="Cricket()">Cricket</button> <br>
+</nav>
+
+
+<main>
+<h1> Welcome to Adaptive live streaming </h1>
+<p>Adaptive live streaming makes sure that you always have the lowest latency possible in your live stream.</p>
+<legend>Configured parameters: </legend>
+<p>Target Latency (secs): 3</p>
+<p>Min. drift (secs): 0.5</p>Catch-up playback rate (%): 0.5</p>
+<p>Live catchup latency threshold (secs): 15</p>
+
+
+<div id="ESports">
+        <source src="/Downloads/ESports.mp4" type="video/mp4">
+        <script>document.getElementById("ESports").style.display = "none";</script>
+        </div>
+</div>
+<div id="Soccer">
+        <div class="video">
+        <video controls width="800" id="mvideo">
+        <video controls="true"></video>
+</div>
+
+        <!--source src="/Downloads/Soccer.mp4" type="video/mp4"-->
+        <script>document.getElementById("Soccer").style.display = "none";</script>
+</div>
+<div id="Basketball">
+  
+          <video controls width="800" id="myvid">
+        <source src="/Downloads/Basketball.mp4" type="video/mp4">
+        <script>document.getElementById("Basketball").style.display = "none"</script>
+</div>
+<div id="Football">
+        <video controls width="800">
+        <source src="/Downloads/Football.mp4" type="video/mp4">
+        <script>document.getElementById("Football").style.display = "none"</script>
+</div>
+<div id="Olympics">
+        <video controls width="800">
+        <source src="/Downloads/Olympics.mp4" type="video/mp4">
+        <script>document.getElementById("Olympics").style.display = "none"</script>
+</div>
+<div id="Cricket">
+        <video controls width="800">
+        <source src="/Downloads/Cricket.mp4" type="video/mp4">
+        <script>document.getElementById("Cricket").style.display = "none"</script>
+</div>
+<div id="Tennis">
+        <video controls width="800">
+        <source src="/Downloads/Tennis.mp4" type="video/mp4">
+        <script>document.getElementById("Tennis").style.display = "none"</script>
+</div>
+
+<button onclick="catchUp()">live</button>
+
+
+</main>
+
+
+
+
+
+<script>
+function myFunction() {
+        document.getElementById("ESports").style.display = "none";
+        document.getElementById("Soccer").style.display = "none";
+        document.getElementById("Tennis").style.display = "none";
+        document.getElementById("Basketball").style.display = "none";
+        document.getElementById("Football").style.display = "none";
+        document.getElementById("Olympics").style.display = "none";
+        document.getElementById("Cricket").style.display = "none";
+}
+function Soccer(){
+        myFunction();
+        document.getElementById("Soccer").style.display = "Block";
+
+}
+function Basketball(){
+        myFunction();
+        document.getElementById("Basketball").style.display = "Block";
+}
+function ESports(){
+        myFunction();
+        document.getElementById("ESports").style.display = "Block";
+}
+function Olympics(){
+        myFunction();
+        document.getElementById("Olympics").style.display = "Block";
+}
+function Tennis(){
+        myFunction();
+        document.getElementById("Tennis").style.display = "Block";
+}
+function Football(){
+        myFunction();
+        document.getElementById("Football").style.display = "Block";
+}
+function Cricket(){
+        myFunction();
+        document.getElementById("Cricket").style.display = "Block";
+}
+  function catchUp(){
+        var currentLatency = parseFloat(player.getCurrentLiveLatency(), 10);
+        var myVideo = document.getElementById("mvideo");
+        myVideo.currentTime = myVideo.currentTime + (currentLatency - 10);
+}
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var player = init();
+
+        setInterval(function () {
+            var dashMetrics = player.getDashMetrics();
+            var settings = player.getSettings();
+
+            var currentLatency = parseFloat(player.getCurrentLiveLatency(), 10);
+            document.getElementById("latency-tag").innerHTML = currentLatency + " secs";
+
+            
+</script>
+</body>
+</html>
+
+  
